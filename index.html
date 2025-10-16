@@ -1,1 +1,396 @@
-index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker: The Complete Cheat Sheet</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #0db7ed;
+            border-bottom: 3px solid #0db7ed;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+        h2 {
+            color: #007bff;
+            margin-top: 30px;
+            padding-left: 10px;
+            border-left: 5px solid #007bff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        th {
+            background-color: #e9ecef;
+            color: #333;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+        code {
+            background-color: #eee;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: Consolas, Monaco, 'Courier New', monospace;
+            color: #c92c2c;
+        }
+        pre {
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐳 Docker: The Complete Cheat Sheet</h1>
+        <p style="text-align: center;">A quick reference for the Docker CLI, Dockerfiles, and Docker Compose.</p>
+
+        <h2>🚀 I. Docker CLI: Image Management</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Command</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>docker pull</code></td>
+                    <td>Download an image from a registry (e.g., Docker Hub).</td>
+                    <td><code>docker pull ubuntu:22.04</code></td>
+                </tr>
+                <tr>
+                    <td><code>docker images</code></td>
+                    <td>List locally stored Docker images.</td>
+                    <td><code>docker images</code></td>
+                </tr>
+                <tr>
+                    <td><code>docker build</code></td>
+                    <td>Build an image from a <strong>Dockerfile</strong> in the context directory (<code>.</code>).</td>
+                    <td><code>docker build -t my-app:v1 .</code></td>
+                </tr>
+                <tr>
+                    <td><code>docker rmi</code></td>
+                    <td>Remove a local image.</td>
+                    <td><code>docker rmi my-app:v1</code></td>
+                </tr>
+                <tr>
+                    <td><code>docker tag</code></td>
+                    <td>Add a new tag to a local image. (Required before pushing).</td>
+                    <td><code>docker tag my-app:v1 myuser/my-app:latest</code></td>
+                </tr>
+                <tr>
+                    <td><code>docker push</code></td>
+                    <td>Upload a tagged image to a registry.</td>
+                    <td><code>docker push myuser/my-app:latest</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>📦 II. Docker CLI: Container Management</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Command</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>docker run</code></td>
+                    <td>Create and start a container from an image.</td>
+                    <td><code>docker run -d --name web -p 8080:80 nginx</code></td>
+                </tr>
+                <tr>
+                    <td><code>docker ps</code></td>
+                    <td>List <strong>running</strong> containers (<code>-a</code> for all, <code>-q</code> for IDs only).</td>
+                    <td><code>docker ps -a</code></td>
+                </tr>
+                <tr>
+                    <td><code>docker start</code></td>
+                    <td>Start one or more stopped containers.</td>
+                    <td><code>docker start web</code></td>
+                </tr>
+                <tr>
+                    <td><code>docker stop</code></td>
+                    <td>Gracefully stop a running container.</td>
+                    <td><code>docker stop web</code></td>
+                </tr>
+                <tr>
+                    <td><code>docker rm</code></td>
+                    <td>Remove one or more containers (use <code>-f</code> to force remove).</td>
+                    <td><code>docker rm web</code></td>
+                </tr>
+                <tr>
+                    <td><code>docker exec</code></td>
+                    <td>Run a command inside a <strong>running</strong> container.</td>
+                    <td><code>docker exec -it web /bin/bash</code></td>
+                </tr>
+                <tr>
+                    <td><code>docker logs</code></td>
+                    <td>Fetch and follow the output logs of a container (<code>-f</code> for follow).</td>
+                    <td><code>docker logs -f web</code></td>
+                </tr>
+                <tr>
+                    <td><code>docker inspect</code></td>
+                    <td>Return low-level configuration details (JSON) for a resource.</td>
+                    <td><code>docker inspect web</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Key <code>docker run</code> Flags</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Flag</th>
+                    <th>Abbreviation</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>--detach</code></td>
+                    <td><code>-d</code></td>
+                    <td>Run the container in the <strong>background</strong> (detached mode).</td>
+                </tr>
+                <tr>
+                    <td><code>--publish</code></td>
+                    <td><code>-p</code></td>
+                    <td><strong>Map a container port</strong> to a host port. (e.g., <code>host:container</code>).</td>
+                </tr>
+                <tr>
+                    <td><code>--volume</code></td>
+                    <td><code>-v</code></td>
+                    <td><strong>Bind mount</strong> a volume or directory (for persistence or sharing data).</td>
+                </tr>
+                <tr>
+                    <td><code>--env</code></td>
+                    <td><code>-e</code></td>
+                    <td>Set an <strong>environment variable</strong> inside the container.</td>
+                </tr>
+                <tr>
+                    <td><code>--rm</code></td>
+                    <td></td>
+                    <td>Automatically remove the container when it exits.</td>
+                </tr>
+                <tr>
+                    <td><code>--interactive</code> / <code>--tty</code></td>
+                    <td><code>-it</code></td>
+                    <td>Keep STDIN open and allocate a pseudo-TTY (for interactive shell).</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>💾 III. Docker CLI: Data & Network</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Command</th>
+                    <th>Purpose</th>
+                    <th>Example</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>docker volume create</code></td>
+                    <td>Create a named volume for persistent data.</td>
+                    <td><code>docker volume create my-data</code></td>
+                </tr>
+                <tr>
+                    <td><code>docker volume ls</code></td>
+                    <td>List all volumes.</td>
+                    <td><code>docker volume ls</code></td>
+                </tr>
+                <tr>
+                    <td><code>docker network create</code></td>
+                    <td>Create a new network for containers to communicate on.</td>
+                    <td><code>docker network create app-net</code></td>
+                </tr>
+                <tr>
+                    <td><code>docker network connect</code></td>
+                    <td>Connect a running container to a network.</td>
+                    <td><code>docker network connect app-net web</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🔨 IV. Dockerfile Instructions</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Instruction</th>
+                    <th>Purpose</th>
+                    <th>Example</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>FROM</code></td>
+                    <td>Defines the <strong>base image</strong> the build starts from.</td>
+                    <td><code>FROM node:20-alpine</code></td>
+                </tr>
+                <tr>
+                    <td><code>WORKDIR</code></td>
+                    <td>Sets the <strong>current working directory</strong> for subsequent instructions.</td>
+                    <td><code>WORKDIR /app</code></td>
+                </tr>
+                <tr>
+                    <td><code>COPY</code></td>
+                    <td>Copies files from the local build context to the image.</td>
+                    <td><code>COPY package*.json ./</code></td>
+                </tr>
+                <tr>
+                    <td><code>RUN</code></td>
+                    <td>Executes commands and creates a <strong>new image layer</strong>.</td>
+                    <td><code>RUN npm install</code></td>
+                </tr>
+                <tr>
+                    <td><code>EXPOSE</code></td>
+                    <td>Documents which port the container will listen on at runtime.</td>
+                    <td><code>EXPOSE 3000</code></td>
+                </tr>
+                <tr>
+                    <td><code>ENV</code></td>
+                    <td>Sets permanent <strong>environment variables</strong> in the image/container.</td>
+                    <td><code>ENV NODE_ENV=production</code></td>
+                </tr>
+                <tr>
+                    <td><code>CMD</code></td>
+                    <td>Defines the default command that runs when the container starts.</td>
+                    <td><code>CMD ["npm", "start"]</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Example Dockerfile Snippet</h3>
+        <pre><code>FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["npm", "start"]</code></pre>
+
+        <h2>⚙️ V. Docker Compose</h2>
+        <p>Commands for managing multi-container applications defined in a <code>compose.yaml</code> file.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Command</th>
+                    <th>Description</th>
+                    <th>Common Flag</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>docker compose up</code></td>
+                    <td>Build, create, (re)start, and aggregate logs for services.</td>
+                    <td><code>-d</code> (Detach mode)</td>
+                </tr>
+                <tr>
+                    <td><code>docker compose down</code></td>
+                    <td>Stop and remove containers, networks, and (optionally) volumes.</td>
+                    <td><code>-v</code> (Remove volumes)</td>
+                </tr>
+                <tr>
+                    <td><code>docker compose build</code></td>
+                    <td>Rebuild images defined in the service section.</td>
+                    <td><code>--no-cache</code> (Force rebuild)</td>
+                </tr>
+                <tr>
+                    <td><code>docker compose ps</code></td>
+                    <td>List containers (services) in the current project.</td>
+                    <td><code>-q</code> (Only show IDs)</td>
+                </tr>
+                <tr>
+                    <td><code>docker compose exec</code></td>
+                    <td>Execute a command in a running service container.</td>
+                    <td><code>web bash</code> (Service name and command)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Example <code>compose.yaml</code> Snippet</h3>
+        <pre><code>version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+  
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/postgresql/data # Named volume for persistence
+
+volumes:
+  db_data: # Define the named volume</code></pre>
+        
+        <h2>🧹 VI. Cleaning Up Docker</h2>
+        <p>Commands to reclaim disk space by removing unused resources.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Command</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>docker system prune</code></td>
+                    <td>Remove all stopped containers, dangling images, unused networks, and dangling build cache.</td>
+                </tr>
+                <tr>
+                    <td><code>docker system prune -a</code></td>
+                    <td><strong>Aggressive clean-up</strong>: Also removes <strong>all unused images</strong> (not just dangling ones) and unused volumes. <strong>Use with caution!</strong></td>
+                </tr>
+                <tr>
+                    <td><code>docker volume prune</code></td>
+                    <td>Remove all unused volumes.</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>
